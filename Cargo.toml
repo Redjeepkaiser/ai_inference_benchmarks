@@ -6,8 +6,6 @@ edition = "2021"
 [dependencies]
 criterion = "0.5.1"
 image = "0.24.8"
-log = "0.4.20"
-nalgebra = "0.32.3"
 ndarray = "0.15.6"
 nshare = "0.9.0"
 openvino = "0.6.0"
