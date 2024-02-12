@@ -58,6 +58,31 @@ fn predict(m: &CNNNetwork, model: &mut ExecutableNetwork, img: &Vec<u8>) {
     infer_request.infer().unwrap();
 }
 
+fn criterion_benchmark(c: &mut Criterion) {
+    // Instantiate core
+    let mut core = Core::new(None).unwrap();
+
+    // Read network
+    // TODO: Look into advantages of using IR vs ONNX
+    // let m = core.read_network_from_file(XML_PATH, BIN_PATH).unwrap();
+    let m = core.read_network_from_file(ONNX_PATH, "AUTO").unwrap();
+    let mut model = core.load_network(&m, "CPU").unwrap();
+
+    // Read image
+    let img: Vec<u8> = load_img();
+
+    let mut group = c.benchmark_group("openvino");
+    group.significance_level(0.1).sample_size(10);
+    group.bench_function("model predict", |b| {
+        b.iter(|| predict(black_box(&m), black_box(&mut model), black_box(&img)))
+    });
+    group.finish();
+}
+
+criterion_group!(benches, criterion_benchmark);
+criterion_main!(benches);
+
+// TODO: do we want to measure the time this takes as well?
 // fn load_output() {
 // // Load output
 // // Converts output back to Vec<f32>
@@ -77,27 +102,3 @@ fn predict(m: &CNNNetwork, model: &mut ExecutableNetwork, img: &Vec<u8>) {
 //
 // println!("{:?}", b.len());
 // }
-
-fn criterion_benchmark(c: &mut Criterion) {
-    // Instantiate core
-    let mut core = Core::new(None).unwrap();
-
-    // Read network
-    // TODO: Look into advantages of using IR vs ONNX
-    // let m = core.read_network_from_file(XML_PATH, BIN_PATH).unwrap();
-    let m = core.read_network_from_file(ONNX_PATH, "AUTO").unwrap();
-    let mut model = core.load_network(&m, "CPU").unwrap();
-
-    // Read image
-    let img: Vec<u8> = load_img();
-
-    let mut group = c.benchmark_group("openvino");
-    group.significance_level(0.1).sample_size(10);
-    group.bench_function("model predict", |b| {
-        b.iter(|| predict(black_box(&m), &mut model, black_box(&img)))
-    });
-    group.finish();
-}
-
-criterion_group!(benches, criterion_benchmark);
-criterion_main!(benches);

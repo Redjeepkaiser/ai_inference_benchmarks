@@ -84,5 +84,5 @@ fn main() {
         Vec::from_raw_parts(ptr, length, capacity)
     };
 
-    println!("{:?}", b.len());
+    println!("{:?}", b);
 }
