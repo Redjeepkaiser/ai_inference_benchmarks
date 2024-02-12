@@ -1,6 +1,6 @@
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
-use tract_onnx::prelude::*;
 use tract_ndarray::Array;
+use tract_onnx::prelude::*;
 
 const MODEL_PATH: &str = "res/resnet.onnx";
 const IMG_PATH: &str = "res/elephants.jpg";
@@ -12,7 +12,7 @@ const IMAGENET_STD: [f32; 3] = [0.229, 0.224, 0.225];
 type TractModel = SimplePlan<
     TypedFact,
     Box<dyn TypedOp>,
-    tract_onnx::prelude::Graph<TypedFact, Box<dyn TypedOp>>
+    tract_onnx::prelude::Graph<TypedFact, Box<dyn TypedOp>>,
 >;
 
 fn load_model() -> TractResult<TractModel> {
@@ -37,16 +37,27 @@ fn criterion_benchmark(c: &mut Criterion) {
 
     let img = image::open(IMG_PATH).unwrap().to_rgb8();
     let img = image::imageops::resize(
-        &img, IMG_DIMS[2] as u32, IMG_DIMS[3] as u32, image::imageops::FilterType::Triangle
+        &img,
+        IMG_DIMS[2] as u32,
+        IMG_DIMS[3] as u32,
+        image::imageops::FilterType::Triangle,
     );
     let img: Tensor = ((tract_ndarray::Array4::from_shape_fn(IMG_DIMS, |(_, c, y, x)| {
-            img[(x as _, y as _)][c] as f32 / 255.0
-        }) - avg) / std
-    ).into();
+        img[(x as _, y as _)][c] as f32 / 255.0
+    }) - avg)
+        / std)
+        .into();
     // ****
 
+    let mut group = c.benchmark_group("tract");
+    // Configure Criterion.rs to detect smaller differences and increase sample size to improve
+    // precision and counteract the resulting noise.
+    group.significance_level(0.1).sample_size(10);
     // TODO: not use deep clone, or bench deep clone separately
-    c.bench_function("model predict", |b| b.iter(|| predict(black_box(&model), black_box(img.deep_clone()))));
+    group.bench_function("model predict", |b| {
+        b.iter(|| predict(black_box(&model), black_box(img.deep_clone())))
+    });
+    group.finish();
 }
 
 criterion_group!(benches, criterion_benchmark);
