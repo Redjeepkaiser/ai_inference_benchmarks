@@ -1,14 +1,17 @@
 [package]
-name = "ai_integration"
+name = "ai_benchmarks"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+compiled-nn = "0.12.0"
 criterion = "0.5.1"
 image = "0.24.8"
 ndarray = "0.15.6"
 nshare = "0.9.0"
 openvino = "0.6.0"
+# openvino = { git = "https://github.com/YukumoHunter/openvino-rs.git", branch = "evil-hack" }
+rand = "0.8.5"
 tract = "0.21.0"
 tract-onnx = "0.21.0"
 
@@ -18,4 +21,8 @@ harness = false
 
 [[bench]]
 name = "openvino"
+harness = false
+
+[[bench]]
+name = "compiled_nn"
 harness = false
