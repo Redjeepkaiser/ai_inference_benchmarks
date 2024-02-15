@@ -1,17 +1,18 @@
 from pathlib import Path
 
 import openvino
-import torch
-import torchvision
+
+# import torch
+# import torchvision
 from openvino.tools.ovc import convert_model
 
 if __name__ == "__main__":
-    onnx_path = Path("res/hresnet.onnx")
+    onnx_path = Path("./etc/models/whistledetection.onnx")
     ir_path = onnx_path.with_suffix(".xml")
 
-    dummy_input = torch.randn(1, 3, 224, 224)
-    model = torchvision.models.resnet18(pretrained=True)
-    torch.onnx.export(model, dummy_input, str(onnx_path))
+    # dummy_input = torch.randn(1, 3, 224, 224)
+    # model = torchvision.models.resnet18(pretrained=True)
+    # torch.onnx.export(model, dummy_input, str(onnx_path))
 
     if not ir_path.exists():
         print("Exporting ONNX model to IR... This may take a few minutes.")
