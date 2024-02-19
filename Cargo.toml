@@ -14,14 +14,22 @@ rand = "0.8.5"
 tch = "0.15.0"
 tract-onnx = "0.21.0"
 
+[features]
+torch = []
+openvino = []
+tract = []
+
 [[bench]]
+required-features = ["tract"]
 name = "tract"
 harness = false
 
 [[bench]]
+required-features = ["openvino"]
 name = "openvino"
 harness = false
 
 [[bench]]
+required-features = ["torch"]
 name = "torch"
 harness = false

@@ -1,8 +1,12 @@
-First, run *dummy_model.py* to build the model.
-
-Then you can run 
+Then you can run to run all benchmarks
 ```
-cargo bench
+cargo bench --all-feature
 ```
- to run the benches, add the *--no-run* flag to compile binaries.
+, add the *--no-run* flag to compile binaries.
 
+Supported features flags are `tract`, `openvino` and `torch`.
+
+To run only one supported benchmark, for example torch, run the following command:
+```
+cargo bench -F torch
+```
