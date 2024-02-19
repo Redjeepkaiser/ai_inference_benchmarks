@@ -13,7 +13,7 @@ cargo bench -F torch
 ```
 
 ## Results on NAOV6
-### Execution time for a single forward pass utilizing all cores (after warm-up)
+### Average execution time for a single forward pass utilizing all cores (after warm-up)
 | Backend/Model     | ResNet18 | MobileNetv2 |
 |-------------------|----------|-------------|
 | OpenVINO          | 158ms    | 33ms        |
