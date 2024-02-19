@@ -1,7 +1,14 @@
+#[cfg(feature = "openvino")]
 pub mod openvino;
-pub mod torch;
-pub mod tract;
-
+#[cfg(feature = "openvino")]
 pub use openvino::OpenVINO;
-pub use torch::Torch;
+
+#[cfg(feature = "tract")]
+pub mod tract;
+#[cfg(feature = "tract")]
 pub use tract::Tract;
+
+#[cfg(feature = "torch")]
+pub mod torch;
+#[cfg(feature = "torch")]
+pub use torch::Torch;
