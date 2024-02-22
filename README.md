@@ -1,12 +1,19 @@
-First, run *dummy_model.py* to build the model.
-
-Then you can run 
+## Get started
+You can run all benchmarks with:
 ```
-cargo bench
+cargo bench --all-feature
 ```
- to run the benches, add the *--no-run* flag to compile binaries.
+Add the *--no-run* flag to compile binaries.
 
-### Execution time for 10 forward passes
+Supported features flags are `tract`, `openvino` and `torch`.
+
+To run only one supported benchmark, for example torch, run the following command:
+```
+cargo bench -F torch
+```
+
+## Results on NAOV6
+### Average execution time for a single forward pass utilizing all cores (after warm-up)
 | Backend/Model     | ResNet18 | MobileNetv2 |
 |-------------------|----------|-------------|
 | OpenVINO          | 158ms    | 33ms        |
