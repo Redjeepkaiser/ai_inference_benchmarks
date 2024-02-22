@@ -1,3 +1,4 @@
+pub mod bound_detect;
 pub mod mobilenetv2;
 pub mod resnet18;
 

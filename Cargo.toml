@@ -25,3 +25,7 @@ harness = false
 [[bench]]
 name = "torch"
 harness = false
+
+[[bench]]
+name = "bound_detect"
+harness = false
